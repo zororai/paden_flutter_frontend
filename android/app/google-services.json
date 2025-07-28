@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "514909409619",
+    "project_id": "paden2-92jowx",
+    "storage_bucket": "paden2-92jowx.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514909409619:android:2e01066c6a8ca3261051a6",
+        "android_client_info": {
+          "package_name": "com.mycompany.paden2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgfE1yAm-wEGdyscMoCPw1n1ZOSB6Ichs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

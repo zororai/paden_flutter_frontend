@@ -1,0 +1,2 @@
+C:/Users/mazar/Downloads/personal project/paden/android/app/.cxx/RelWithDebInfo/pg1j1yd1/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/mazar/Downloads/personal project/paden/android/app/.cxx/RelWithDebInfo/pg1j1yd1/x86_64/CMakeFiles/rebuild_cache.dir
