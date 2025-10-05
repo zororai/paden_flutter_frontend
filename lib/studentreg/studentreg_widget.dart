@@ -96,7 +96,7 @@ class _StudentregWidgetState extends State<StudentregWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 20.0),
                           child: Text(
-                            'User  Registartion',
+                            'User  Registration Form',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(

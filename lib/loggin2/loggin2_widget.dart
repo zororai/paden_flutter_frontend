@@ -462,370 +462,12 @@ class _Loggin2WidgetState extends State<Loggin2Widget> {
                                             focusColor: Colors.transparent,
                                             hoverColor: Colors.transparent,
                                             highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              logFirebaseEvent(
-                                                  'LOGIN22_PAGE_Container_al498iy7_ON_TAP');
-                                              logFirebaseEvent(
-                                                  'Container_validate_form');
-                                              if (_model.formKey.currentState ==
-                                                      null ||
-                                                  !_model.formKey.currentState!
-                                                      .validate()) {
-                                                return;
-                                              }
-                                              logFirebaseEvent(
-                                                  'Container_custom_action');
-                                              _model.internet =
-                                                  await actions.checkInternet();
-                                              if (_model.internet == true) {
-                                                logFirebaseEvent(
-                                                    'Container_backend_call');
-                                                _model.loginresponse =
-                                                    await LoginCall.call(
-                                                  email: _model
-                                                      .emailAddressTextController
-                                                      .text,
-                                                  password: _model
-                                                      .passwordTextController
-                                                      .text,
-                                                );
-
-                                                logFirebaseEvent(
-                                                    'Container_show_snack_bar');
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                      'Loading',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .labelLarge
-                                                              .override(
-                                                                font:
-                                                                    GoogleFonts
-                                                                        .lato(
-                                                                  fontWeight: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelLarge
-                                                                      .fontWeight,
-                                                                  fontStyle: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelLarge
-                                                                      .fontStyle,
-                                                                ),
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .primaryText,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .fontStyle,
-                                                              ),
-                                                    ),
-                                                    duration: Duration(
-                                                        milliseconds: 6000),
-                                                    backgroundColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .secondaryBackground,
-                                                  ),
-                                                );
-                                                logFirebaseEvent(
-                                                    'Container_update_app_state');
-                                                FFAppState().loading = true;
-                                                safeSetState(() {});
-                                                if ((_model.loginresponse
-                                                        ?.succeeded ??
-                                                    true)) {
-                                                  logFirebaseEvent(
-                                                      'Container_auth');
-                                                  GoRouter.of(context)
-                                                      .prepareAuthEvent();
-                                                  await authManager.signIn(
-                                                    authenticationToken:
-                                                        getJsonField(
-                                                      (_model.loginresponse
-                                                              ?.jsonBody ??
-                                                          ''),
-                                                      r'''$.token''',
-                                                    ).toString(),
-                                                  );
-                                                  logFirebaseEvent(
-                                                      'Container_update_app_state');
-                                                  FFAppState().username =
-                                                      getJsonField(
-                                                    (_model.loginresponse
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                    r'''$.user.name''',
-                                                  ).toString();
-                                                  safeSetState(() {});
-                                                  logFirebaseEvent(
-                                                      'Container_update_app_state');
-                                                  FFAppState().useremail =
-                                                      getJsonField(
-                                                    (_model.loginresponse
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                    r'''$.user.email''',
-                                                  ).toString();
-                                                  safeSetState(() {});
-                                                  logFirebaseEvent(
-                                                      'Container_update_app_state');
-                                                  FFAppState().profileimage =
-                                                      getJsonField(
-                                                    (_model.loginresponse
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                    r'''$.user.image''',
-                                                  ).toString();
-                                                  safeSetState(() {});
-
-                                                  FFAppState().userrole =
-                                                      getJsonField(
-                                                    (_model.loginresponse
-                                                            ?.jsonBody ??
-                                                        ''),
-                                                    r'''$.user.role''',
-                                                  ).toString();
-                                                  safeSetState(() {});
-
-                                                  logFirebaseEvent(
-                                                      'Container_backend_call');
-                                                  _model.home =
-                                                      await HomestatusCall.call(
-                                                    token:
-                                                        currentAuthenticationToken,
-                                                  );
-
-                                                  logFirebaseEvent(
-                                                      'Container_update_app_state');
-                                                  FFAppState().loading = false;
-                                                  safeSetState(() {});
-                                                  logFirebaseEvent(
-                                                      'Container_custom_action');
-                                                  _model.re = await actions
-                                                      .navigateBasedOnStatusCode(
-                                                    valueOrDefault<int>(
-                                                      (_model.home
-                                                              ?.statusCode ??
-                                                          200),
-                                                      0,
-                                                    ),
-                                                  );
-                                                  final role = LoginCall.role(
-                                                      _model.loginresponse
-                                                          ?.jsonBody);
-                                                  if (role == 'Landlord') {
-                                                    logFirebaseEvent(
-                                                        'Container_navigate_to');
-
-                                                    logFirebaseEvent(
-                                                        'Container_backend_call');
-                                                    _model.list =
-                                                        await ListCall.call(
-                                                      token:
-                                                          currentAuthenticationToken,
-                                                    );
-
-                                                    logFirebaseEvent(
-                                                        'Container_update_app_state');
-                                                    FFAppState()
-                                                        .title = (getJsonField(
-                                                      (_model.list?.jsonBody ??
-                                                          ''),
-                                                      r'''$.properties[:].title''',
-                                                      true,
-                                                    ) as List)
-                                                        .map<String>(
-                                                            (s) => s.toString())
-                                                        .toList()
-                                                        .toList()
-                                                        .cast<String>();
-                                                    safeSetState(() {});
-                                                    logFirebaseEvent(
-                                                        'Container_navigate_to');
-
-                                                    context.pushNamedAuth(
-                                                        HomelandlordWidget
-                                                            .routeName,
-                                                        context.mounted);
-                                                  } else {
-                                                    if (_model.re ==
-                                                        FFAppState().homecode) {
-                                                      logFirebaseEvent(
-                                                          'Container_navigate_to');
-                                                      context.pushNamedAuth(
-                                                          HomePageWidget
-                                                              .routeName,
-                                                          context.mounted);
-                                                    }
-                                                    if (_model.re ==
-                                                        FFAppState()
-                                                            .profilecode) {
-                                                      logFirebaseEvent(
-                                                          'Container_navigate_to');
-
-                                                      context.pushNamedAuth(
-                                                          CreateprofileWidget
-                                                              .routeName,
-                                                          context.mounted);
-                                                    } else {
-                                                      if (_model.re ==
-                                                          FFAppState()
-                                                              .reguser) {
-                                                        logFirebaseEvent(
-                                                            'Container_navigate_to');
-
-                                                        context.pushNamedAuth(
-                                                            RegpaymentWidget
-                                                                .routeName,
-                                                            context.mounted);
-                                                      } else {
-                                                        if (_model.re ==
-                                                            FFAppState()
-                                                                .landlordlogin) {
-                                                          logFirebaseEvent(
-                                                              'Container_backend_call');
-                                                          _model.list =
-                                                              await ListCall
-                                                                  .call(
-                                                            token:
-                                                                currentAuthenticationToken,
-                                                          );
-
-                                                          logFirebaseEvent(
-                                                              'Container_update_app_state');
-                                                          FFAppState().title =
-                                                              (getJsonField(
-                                                            (_model.list
-                                                                    ?.jsonBody ??
-                                                                ''),
-                                                            r'''$.properties[:].title''',
-                                                            true,
-                                                          ) as List)
-                                                                  .map<String>(
-                                                                      (s) => s
-                                                                          .toString())
-                                                                  .toList()
-                                                                  .toList()
-                                                                  .cast<
-                                                                      String>();
-                                                          safeSetState(() {});
-                                                          logFirebaseEvent(
-                                                              'Container_navigate_to');
-
-                                                          context.pushNamedAuth(
-                                                              HomelandlordWidget
-                                                                  .routeName,
-                                                              context.mounted);
-                                                        } else {
-                                                          logFirebaseEvent(
-                                                              'Container_alert_dialog');
-                                                          await showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (alertDialogContext) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'User Login'),
-                                                                content: Text(
-                                                                    'Check Your loging details'),
-                                                                actions: [
-                                                                  TextButton(
-                                                                    onPressed: () =>
-                                                                        Navigator.pop(
-                                                                            alertDialogContext),
-                                                                    child: Text(
-                                                                        'Ok'),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            },
-                                                          );
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                } else {
-                                                  logFirebaseEvent(
-                                                      'Container_alert_dialog');
-                                                  await showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) {
-                                                      return Dialog(
-                                                        elevation: 0,
-                                                        insetPadding:
-                                                            EdgeInsets.zero,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                    0.0, 0.0)
-                                                                .resolve(
-                                                                    Directionality.of(
-                                                                        context)),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            FocusScope.of(
-                                                                    dialogContext)
-                                                                .unfocus();
-                                                            FocusManager
-                                                                .instance
-                                                                .primaryFocus
-                                                                ?.unfocus();
-                                                          },
-                                                          child:
-                                                              LoginerrorWidget(),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              } else {
-                                                logFirebaseEvent(
-                                                    'Container_alert_dialog');
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (dialogContext) {
-                                                    return Dialog(
-                                                      elevation: 0,
-                                                      insetPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      alignment:
-                                                          AlignmentDirectional(
-                                                                  0.0, 0.0)
-                                                              .resolve(
-                                                                  Directionality.of(
-                                                                      context)),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          FocusScope.of(
-                                                                  dialogContext)
-                                                              .unfocus();
-                                                          FocusManager.instance
-                                                              .primaryFocus
-                                                              ?.unfocus();
-                                                        },
-                                                        child:
-                                                            AllowNotificationPopupWidget(),
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              }
-
-                                              safeSetState(() {});
+                                           onTap: () async {
+                                              logFirebaseEvent('LOGIN22_PAGE_LOGIN_BUTTON_ON_TAP');
+                                              await _handleLogin(context);
                                             },
+
+                                           
                                             child: Container(
                                               width: 357.0,
                                               height: 40.0,
@@ -1069,6 +711,180 @@ class _Loggin2WidgetState extends State<Loggin2Widget> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// =======================
+  /// Login Handler Methods
+  /// =======================
+  
+  Future<void> _handleLogin(BuildContext context) async {
+    logFirebaseEvent('LOGIN22_PAGE_validate_form');
+
+    // ✅ 1. Validate the form
+    if (!(_model.formKey.currentState?.validate() ?? false)) return;
+
+    // ✅ 2. Check Internet connection
+    logFirebaseEvent('LOGIN22_PAGE_check_internet');
+    _model.internet = await actions.checkInternet();
+
+    if (!(_model.internet ?? false)) {
+      await _showNoInternetDialog(context);
+      return;
+    }
+
+    // ✅ 3. Show loading Snackbar
+    _showLoadingSnackbar(context);
+    FFAppState().loading = true;
+    safeSetState(() {});
+
+    try {
+      // ✅ 4. Make login API call
+      logFirebaseEvent('LOGIN22_PAGE_backend_call_login');
+      _model.loginresponse = await LoginCall.call(
+        email: _model.emailAddressTextController.text.trim(),
+        password: _model.passwordTextController.text,
+      );
+
+      // ✅ 5. Handle failed login
+      if (!(_model.loginresponse?.succeeded ?? false)) {
+        FFAppState().loading = false;
+        safeSetState(() {});
+        await _showLoginErrorDialog(context);
+        return;
+      }
+
+      // ✅ 6. Extract and save user data
+      logFirebaseEvent('LOGIN22_PAGE_auth_success');
+      final json = _model.loginresponse?.jsonBody ?? '';
+      final token = getJsonField(json, r'''$.token''').toString();
+
+      await authManager.signIn(authenticationToken: token);
+
+      FFAppState()
+        ..username = getJsonField(json, r'''$.user.name''').toString()
+        ..useremail = getJsonField(json, r'''$.user.email''').toString()
+        ..profileimage = getJsonField(json, r'''$.user.image''').toString()
+        ..userrole = getJsonField(json, r'''$.user.role''').toString();
+
+      safeSetState(() {});
+
+      // ✅ 7. Fetch home status
+      logFirebaseEvent('LOGIN22_PAGE_backend_call_home_status');
+      _model.home = await HomestatusCall.call(token: token);
+
+      FFAppState().loading = false;
+      safeSetState(() {});
+
+      // ✅ 8. Handle navigation
+      await _navigateUser(context);
+    } catch (e) {
+      FFAppState().loading = false;
+      safeSetState(() {});
+      await _showLoginErrorDialog(context);
+      debugPrint('Login error: $e');
+    }
+  }
+
+  /// =======================
+  /// Helper Methods
+  /// =======================
+
+  void _showLoadingSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Loading...',
+          style: FlutterFlowTheme.of(context).labelLarge.copyWith(
+                color: FlutterFlowTheme.of(context).primaryText,
+              ),
+        ),
+        duration: const Duration(seconds: 6),
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+      ),
+    );
+  }
+
+  Future<void> _showLoginErrorDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => const Dialog(
+        backgroundColor: Colors.transparent,
+        child: LoginerrorWidget(),
+      ),
+    );
+  }
+
+  Future<void> _showNoInternetDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => const Dialog(
+        backgroundColor: Colors.transparent,
+        child: AllowNotificationPopupWidget(),
+      ),
+    );
+  }
+
+  Future<void> _navigateUser(BuildContext context) async {
+    final role = LoginCall.role(_model.loginresponse?.jsonBody);
+    final homeStatusCode = valueOrDefault<int>(
+      (_model.home?.statusCode ?? 200),
+      0,
+    );
+
+    _model.re = await actions.navigateBasedOnStatusCode(homeStatusCode);
+
+    // ✅ Role-based routing
+    if (role == 'Landlord') {
+      await _loadLandlordData();
+      context.pushNamedAuth(HomelandlordWidget.routeName, context.mounted);
+      return;
+    }
+
+    // ✅ Regular user routing
+    if (_model.re == FFAppState().homecode) {
+      context.pushNamedAuth(HomePageWidget.routeName, context.mounted);
+    } else if (_model.re == FFAppState().profilecode) {
+      context.pushNamedAuth(CreateprofileWidget.routeName, context.mounted);
+    } else if (_model.re == FFAppState().reguser) {
+      context.pushNamedAuth(RegpaymentWidget.routeName, context.mounted);
+    } else if (_model.re == FFAppState().landlordlogin) {
+      await _loadLandlordData();
+      context.pushNamedAuth(HomelandlordWidget.routeName, context.mounted);
+    } else {
+      await _showInvalidLoginDialog(context);
+    }
+  }
+
+  Future<void> _loadLandlordData() async {
+    logFirebaseEvent('LOGIN22_PAGE_load_landlord_properties');
+    _model.list = await ListCall.call(token: currentAuthenticationToken);
+
+    final titles = (getJsonField(
+      (_model.list?.jsonBody ?? ''),
+      r'''$.properties[:].title''',
+      true,
+    ) as List)
+        .map((s) => s.toString())
+        .toList();
+
+    FFAppState().title = titles;
+    safeSetState(() {});
+  }
+
+  Future<void> _showInvalidLoginDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (alertDialogContext) => AlertDialog(
+        title: const Text('User Login'),
+        content: const Text('Check your login details.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(alertDialogContext),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
